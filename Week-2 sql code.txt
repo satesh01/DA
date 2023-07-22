@@ -1,0 +1,124 @@
+use database DBDemo1;
+
+create database DBDemo1; 
+
+drop database DBDemo1;
+
+select * from customer
+
+drop - table will be deleted
+Delete - Only data in table will be deleted
+
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+
+insert into customer(Customer_ID, Customer_name, Address, DOB) values( 1, 'Hari', 'PO BOX 442 Troy', '01-01-2020');
+insert into customer(Customer_ID, Customer_name, Address) values( 5, 'NULL', NULL);
+insert into customer(Customer_ID, Customer_name, Address) values( 6, 'blank', '');
+
+Select ISNULL(Customer_name,1),ISnull(Address,1) from customer
+Select  trim(Customer_name),isnull(trim(Address),1) from customer
+
+insert into customer values( 3, '','','');
+begin tran
+
+insert into customer(Customer_ID, Customer_name, Address, DOB) values( 5, 'siva', 'PO BOX 1000 CA', '01-01-2012');
+
+end
+commit
+
+rollback;
+
+exec sp_rename 'customer.ADDRESS_TxtT' , 'ADDRESS_Txt';
+
+select * from customer;
+
+SELECT [CustomerID]
+      ,[FirstName]
+      ,[LastName]
+      ,[FullName]
+	  into customer_1994
+  FROM [dbo].[customers] where customerid = 1994
+
+  select * from customer_1994
+
+
+  select * from orders order by customerid,employeeid desc
+
+  select * from productsubcategories where subcategoryid = 31
+   select * from productsubcategories where categoryid = 4
+
+   select distinct DATEDIFF("d",orderdate,shipdate), count(*) from orders group by DATEDIFF("d",orderdate,shipdate)
+   select count(distinct productid) from orders
+
+   select a.ProductID, a.ModelName, b.subcategoryname from 
+   products a,
+   productsubcategories b
+   where a.SubCategoryID = b.subcategoryid
+   and a.SubCategoryID = 31
+
+   select a.ProductID, a.ModelName, b.subcategoryname from 
+   products a left outer join productsubcategories b
+   on a.SubCategoryID = b.subcategoryid
+    where a.SubCategoryID = 31
+
+
+select salesorderid,employeeid,a.customerid,FullName from orders a inner join customers b
+on (a.customerid = b.CustomerID)
+where a.customerid = 1045
+
+  --count
+  select max(CustomerID) from customers
+
+  insert into customers values(1994,'Catherine','Abel','test Customer')
+
+  --filter
+  Select firstname as FIRST_NAME, len(lastname) as "Length of Last name" , SUBSTRING(fullname,1,5) as Substr from customers
+  where firstname ='Catherine'
+  
+  --AND CustomerID >= 100 and CustomerID <= 460
+  group by  firstname, lastname 
+  having count(*) >1
+
+
+  select Customerid, firstname,
+  case when [FirstName] like 'A%' then 'Alpha'
+       when [FirstName] like 'B%' then 'Beta'
+	   else 'Normal'
+	   end as "Case_When",
+  Fullname from customers
+  where firstname like 'A%' or firstname like 'B%'
+
+  --
+
+  select *,
+  case when ListPrice > 1000 then 'Elite_Model'
+       when ListPrice between 10 and 100 then 'LowPrice_Model'
+	   else 'Normal'
+	   end as ModelPriceTag
+    from [dbo].[products]
+
+    select * from [products] a
+	where exists (select ListPrice from [products] b where ListPrice > 1000 and a.productid = b.productid)
+
+	product = 290+
+	Order = 250 products
+
+	----Left join 60919
+	select count(distinct ord_prod), count(distinct prd_product)from 
+	(select  a.Productid as ord_prod,b.productid prd_product,b.ProductName from orders a left outer join products b
+	on (a.productid = b.productid)) c
+
+	----right join 60964
+	select count(distinct ord_prod), count(distinct prd_product)from 
+	(select  a.Productid as ord_prod,b.productid prd_product,b.ProductName from orders a full outer join products b
+	on (a.productid = b.productid)) c
+
+
+
+
+
+
+
+
+
